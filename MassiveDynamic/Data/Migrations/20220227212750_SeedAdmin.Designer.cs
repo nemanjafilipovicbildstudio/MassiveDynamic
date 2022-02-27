@@ -4,14 +4,16 @@ using MassiveDynamic.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MassiveDynamic.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220227212750_SeedAdmin")]
+    partial class SeedAdmin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -205,17 +207,15 @@ namespace MassiveDynamic.Data.Migrations
                         {
                             Id = "11111111-1111-1111-1111-111111111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5b15e2bd-8a16-4b4b-87ed-9b94c5197ac1",
+                            ConcurrencyStamp = "01a2356b-ad14-4dd8-99b9-99add1f52ac8",
                             Email = "admin@massivedynamic.com",
-                            EmailConfirmed = true,
+                            EmailConfirmed = false,
                             FirstName = "Admin",
                             LastName = "Admin",
                             LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@MASSIVEDYNAMIC.COM",
-                            NormalizedUserName = "ADMIN",
                             PasswordHash = "AQAAAAEAACcQAAAAEMq8U0D1JQzZEaIU9ABn9HP6uLDvK/xs6LBgH+0wOtr4HC90np/tjSOM+jWcSyBssA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "55909cec-65df-4370-b997-a9d4757a9c16",
+                            SecurityStamp = "55e37a0c-108f-439b-ae3f-83897e4236ee",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -342,28 +342,28 @@ namespace MassiveDynamic.Data.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "f596e7df-3a3d-4119-a534-50649a85bc88",
+                            ConcurrencyStamp = "88ff1742-a963-4947-9c04-3e7750ef838b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "b66c8a46-6ceb-4996-b5d2-c7f515a6b041",
+                            ConcurrencyStamp = "67459d36-17e8-46f5-8e58-f3f5940cbaf2",
                             Name = "Secretary",
                             NormalizedName = "SECRETARY"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "b6f4f518-1a81-4b59-a8e9-327041f6dfdb",
+                            ConcurrencyStamp = "f7d8b251-fd81-468a-8ace-e692d3c4ef61",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "e7c5ef18-c1fc-41d6-b2bd-c3be30e16906",
+                            ConcurrencyStamp = "22dec8fa-23a9-424c-a4bf-016a190e6130",
                             Name = "Guest",
                             NormalizedName = "GUEST"
                         });

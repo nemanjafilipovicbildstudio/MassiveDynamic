@@ -1,0 +1,57 @@
+<h1>Edit User</h1>
+<h1 *ngIf="!user">Loading...</h1>
+<form *ngIf="user && allRoles" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+        <div class="form-group col-7">
+            <label>First Name</label>
+            <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+            <div *ngIf="f.firstName.errors" class="text-danger">First Name is required</div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-7">
+            <label>Last Name</label>
+            <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+            <div *ngIf="f.lastName.errors" class="text-danger">Last Name is required</div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-7">
+            <label>Username</label>
+            <input type="text" formControlName="userName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.userName.errors }" />
+            <div *ngIf="f.userName.errors" class="text-danger">Username is required</div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-7">
+            <label>Email</label>
+            <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+            <div *ngIf="f.email.errors">
+                <div *ngIf="f.email.errors.required" class="text-danger">Email is required</div>
+                <div *ngIf="f.email.errors.email" class="text-danger">Email must be a valid email address</div>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-7">
+            <label>Roles</label>
+            <div formGroupName="roles">
+                <ul>
+                    <li *ngFor="let item of form.get('roles').value | keyvalue">
+                        <label>
+                            <input type="checkbox" [formControlName]="item.key" [value]="item.value" /> {{ item.key }}
+                        </label>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group col-7">
+        <a routerLink="/fetch-users" class="btn btn-danger float-right">Cancel</a>
+        <button [disabled]="!form.valid" class="btn btn-success float-right" style="margin-right: 10px;">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Save
+        </button>
+    </div>
+</form>

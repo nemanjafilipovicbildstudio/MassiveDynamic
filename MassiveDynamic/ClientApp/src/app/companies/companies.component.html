@@ -1,0 +1,77 @@
+<h1 id="tableLabel">Companies</h1>
+<p *ngIf="!companies"><em>Loading...</em></p>
+<br>
+
+<form [formGroup]="companyForm" *ngIf="companies">
+    <table class='table table-striped' aria-labelledby="tableLabel">
+      <thead>
+        <tr>
+          <th class="col-md-3">Id</th>
+          <th class="col-md-3">Name</th>
+          <th class="col-md-3">Address</th>
+          <th class="col-md-3">Edit/Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let company of companies">
+          <td class="col-md-3"><a class="nav-link" [routerLink]="['/company-details', company.id]">{{ company.id }}</a></td>
+          <td class="col-md-3">
+              <span *ngIf="editCompanyId != company.id">{{ company.name }}</span>
+              <input *ngIf="editCompanyId == company.id" type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': f.name.touched && f.name.errors }" />
+              <div *ngIf="editCompanyId == company.id && f.name.touched && f.name.errors" class="text-danger">Name is required</div>
+          </td>
+          <td class="col-md-3">
+              <span *ngIf="editCompanyId != company.id">{{ company.address }}</span>
+              <input *ngIf="editCompanyId == company.id" type="text" formControlName="address" class="form-control" [ngClass]="{ 'is-invalid': f.address.touched && f.address.errors }" />
+              <div *ngIf="editCompanyId == company.id && f.address.touched && f.address.errors" class="text-danger">Address is required</div>
+          </td>
+          <td class="col-md-3">
+            <button *ngIf="editCompanyId != company.id" type="button" class="btn btn-warning btn-sm" style="margin-right: 10px;" title="Edit" (click)="editCompany(company.id)" [disabled]="!isEditButtonEnabled()">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button *ngIf="editCompanyId != company.id" type="button" class="btn btn-danger btn-sm" style="margin-right: 10px;" title="Delete" (click)="deleteCompany(company.id)" [disabled]="!isDeleteButtonEnabled()">
+              <i class="bi bi-trash"></i>
+            </button>
+            <button *ngIf="editCompanyId == company.id" type="button" class="btn btn-success btn-sm" style="margin-right: 10px;" title="Save" (click)="saveEditedCompany()">
+              <i class="bi bi-check-lg"></i>
+            </button>
+            <button *ngIf="editCompanyId == company.id" type="button" class="btn btn-danger btn-sm" style="margin-right: 10px;" title="Cancel" (click)="cancelEditCompany()">
+              <i class="bi bi-x-square"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="!addNewCompany">
+            <td class="col-md-3"></td>
+            <td class="col-md-3"></td>
+            <td class="col-md-3"></td>
+            <td class="col-md-3">
+                <button type="button" class="btn btn-success btn-sm" style="visibility: hidden !important; margin-right: 10px;">
+                    <i class="bi bi-plus-square"></i>
+                </button>
+                <button type="button" class="btn btn-success btn-sm" title="Add" (click)="addNewComapny()" [disabled]="!isAddButtonEnabled()">
+                    <i class="bi bi-plus-square"></i>
+                </button>
+            </td>
+        </tr>
+        <tr *ngIf="addNewCompany">
+            <td class="col-md-3"></td>
+            <td class="col-md-3">
+                <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': f.name.touched && f.name.errors }" />
+                <div *ngIf="f.name.touched && f.name.errors" class="text-danger">First Name is required</div>
+            </td>
+            <td class="col-md-3">
+                <input type="text" formControlName="address" class="form-control" [ngClass]="{ 'is-invalid': f.address.touched && f.address.errors }" />
+                <div *ngIf="f.address.touched && f.address.errors" class="text-danger">Address is required</div>
+            </td>
+            <td class="col-md-3">
+                <button type="button" class="btn btn-success btn-sm" style="margin-right: 10px;" title="Save" (click)="saveNewCompany()" [disabled]="!companyForm.valid">
+                    <i class="bi bi-check-lg"></i>
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" style="margin-right: 10px;" title="Cancle" (click)="cancelAddingNewComapny()">
+                    <i class="bi bi-x-square"></i>
+                </button>
+            </td>
+        </tr>
+      </tbody>
+    </table>
+</form>

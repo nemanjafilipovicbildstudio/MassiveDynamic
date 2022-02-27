@@ -1,0 +1,177 @@
+<h1>Comapny Details</h1>
+<h1 *ngIf="!company">Loading...</h1>
+<br>
+
+<div *ngIf="company">
+    <div class="form-row">
+        <div class="col-md-2"><h5>Id:</h5> </div>
+        <div class="col-md-5">{{company.id}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><h5>Name: </h5></div>
+        <div class="col-md-5">{{company.name}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"><h5>Address: </h5></div>
+        <div class="col-md-5">{{company.address}}</div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-2"><h5>Contact Persons: </h5></div>
+        <div class="col-md-12">
+			<form [formGroup]="contactPersonForm">
+				<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="company.contactPersons">
+					<thead>
+						<tr>
+							<th class="col-md-2">First Name</th>
+							<th class="col-md-2">Last Name</th>
+							<th class="col-md-2">Email</th>
+							<th class="col-md-2">Phone Number</th>
+							<th class="col-md-2">Address</th>
+							<th class="col-md-2"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let contactPerson of company.contactPersons">
+							<td class="col-md-2">
+								<span *ngIf="editContactPersonId != contactPerson.id">{{ contactPerson.firstName }}</span>
+								<input *ngIf="editContactPersonId == contactPerson.id" type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': f.firstName.touched && f.firstName.errors }" />
+								<div *ngIf="editContactPersonId == contactPerson.id && f.firstName.touched && f.firstName.errors" class="text-danger">First Name is required</div>
+							</td>
+							<td class="col-md-2">
+								<span *ngIf="editContactPersonId != contactPerson.id">{{ contactPerson.lastName }}</span>
+								<input *ngIf="editContactPersonId == contactPerson.id" type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': f.lastName.touched && f.lastName.errors }" />
+								<div *ngIf="editContactPersonId == contactPerson.id && f.lastName.touched && f.lastName.errors" class="text-danger">Last Name is required</div>
+							</td>
+							<td class="col-md-2">
+								<span *ngIf="editContactPersonId != contactPerson.id">{{ contactPerson.email }}</span>
+								<input *ngIf="editContactPersonId == contactPerson.id" type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': f.email.touched && f.email.errors }" />
+								<div *ngIf="editContactPersonId == contactPerson.id && f.email.touched && f.email.errors?.required" class="text-danger">Email is required</div>
+								<div *ngIf="editContactPersonId == contactPerson.id && f.email.touched && f.email.errors?.email" class="text-danger">Email format error</div>
+							</td>
+							<td class="col-md-2">
+								<span *ngIf="editContactPersonId != contactPerson.id">{{ contactPerson.phoneNumber }}</span>
+								<input *ngIf="editContactPersonId == contactPerson.id" type="text" formControlName="phoneNumber" class="form-control" [ngClass]="{ 'is-invalid': f.phoneNumber.touched && f.phoneNumber.errors }" />
+								<div *ngIf="editContactPersonId == contactPerson.id && f.phoneNumber.touched && f.phoneNumber.errors" class="text-danger">Phone Number is required</div>
+							</td>
+							<td class="col-md-2">
+								<span *ngIf="editContactPersonId != contactPerson.id">{{ contactPerson.address }}</span>
+								<input *ngIf="editContactPersonId == contactPerson.id" type="text" formControlName="address" class="form-control" [ngClass]="{ 'is-invalid': f.address.touched && f.address.errors }" />
+								<div *ngIf="editContactPersonId == contactPerson.id && f.address.touched && f.address.errors" class="text-danger">Address is required</div>
+							</td>
+							<td class="col-md-2">
+								<button *ngIf="editContactPersonId != contactPerson.id" type="button" class="btn btn-warning btn-sm" style="margin-right: 10px;" title="Edit" (click)="editContactPerson(contactPerson.id)" [disabled]="!isEditContactPersonButtonEnabled()">
+									<i class="bi bi-pencil"></i>
+								</button> 
+								<button *ngIf="editContactPersonId != contactPerson.id" type="button" class="btn btn-danger btn-sm" title="Delete" (click)="deleteContactPerson(contactPerson.id)" [disabled]="!isDeleteButtonEnabled()">
+									<i class="bi bi-trash"></i> 
+								</button>
+
+								<button *ngIf="editContactPersonId == contactPerson.id" type="button" class="btn btn-success btn-sm" style="margin-right: 10px;" title="Save" (click)="saveEditedContactPerson()" [disabled]="!contactPersonForm.valid">
+									<i class="bi bi-check-lg"></i>
+								</button>
+								<button *ngIf="editContactPersonId == contactPerson.id" type="button" class="btn btn-danger btn-sm" style="margin-right: 10px;" title="Cancel" (click)="cancelEditContactPerson()">
+									<i class="bi bi-x-square"></i>
+								</button>
+							</td>
+						</tr>
+						<tr *ngIf="!addContactPersonFlag">
+							<td class="col-md-2"></td>
+							<td class="col-md-2"></td>
+							<td class="col-md-2"></td>
+							<td class="col-md-2"></td>
+							<td class="col-md-2"></td>
+							<td class="col-md-2">
+								<button type="button" class="btn btn-success btn-sm" title="Add" (click)="addContactPerson()" [disabled]="!isAddButtonEnabled()">
+									<i class="bi bi-plus-square"></i>
+								</button>
+							</td>
+						</tr>
+						<tr *ngIf="addContactPersonFlag">
+							<td class="col-md-2">
+								<input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': f.firstName.touched && f.firstName.errors }" />
+								<div *ngIf="f.firstName.touched && f.firstName.errors" class="text-danger">First Name is required</div>
+							</td>
+							<td class="col-md-2">
+								<input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': f.lastName.touched && f.lastName.errors }" />
+								<div *ngIf="f.lastName.touched && f.lastName.errors" class="text-danger">Last Name is required</div>
+							</td>
+							<td class="col-md-2">
+								<input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': f.email.touched && f.email.errors }" />
+								<div *ngIf="f.email.touched && f.email.errors?.required" class="text-danger">Email is required</div>
+								<div *ngIf="f.email.touched && f.email.errors?.email" class="text-danger">Email must be a valid email address</div>
+							</td>
+							<td class="col-md-2">
+								<input type="text" formControlName="phoneNumber" class="form-control" [ngClass]="{ 'is-invalid': f.phoneNumber.touched && f.phoneNumber.errors }" />
+								<div *ngIf="f.phoneNumber.touched && f.phoneNumber.errors" class="text-danger">Last Name is required</div>
+							</td>
+							<td class="col-md-2">
+								<input type="text" formControlName="address" class="form-control" [ngClass]="{ 'is-invalid': f.address.touched && f.address.errors }" />
+								<div *ngIf="f.address.touched && f.address.errors" class="text-danger">Last Name is required</div>
+							</td>
+							<td class="col-md-2">
+								<button type="button" class="btn btn-success btn-sm" style="margin-right: 10px;" title="Save" (click)="saveContactPerson(company.id)" [disabled]="!contactPersonForm.valid">
+									<i class="bi bi-check-lg"></i>
+								</button>
+								<button type="button" class="btn btn-danger btn-sm" style="margin-right: 10px;" title="Cancle" (click)="cancelAddingContactPerson()">
+									<i class="bi bi-x-square"></i>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+        </div>
+    </div>
+	<br><br>
+	<div class="row" *ngIf="canAccessDocuments()">
+        <div class="col-md-2">
+			<h5 title="Only .jpg, .jpeg, .pdf supported">Documents: <span class="text-danger" title="Only .jpg, .jpeg, .pdf supported">*</span></h5>
+		</div>
+		<div class="col-md-10">
+			<div class="row" style="margin-bottom:15px;">
+				<div class="col-md-3">
+					<input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;" multiple accept=".jpg, .jpeg, .pdf">
+					<button type="button" class="btn btn-sm btn-success" (click)="file.click()" [disabled]="!isAddButtonEnabled()">Upload File</button>
+				</div>
+				<div class="col-md-4">
+					<span class="upload" *ngIf="uploadProgress > 0 && !uploadError">
+						{{uploadProgress}}%
+					</span>
+					<span class="upload" *ngIf="uploadMessage && !uploadError">
+						{{uploadMessage}}
+					</span>
+					<span class="text-danger" *ngIf="uploadError">
+						{{uploadError}}
+					</span>
+				</div>
+		    </div>
+		</div>
+		<div class="col-md-12">
+			<table class='table table-striped' aria-labelledby="tableLabel">
+				<thead>
+					<tr>
+						<th class="col-md-4">File Name</th>
+						<th class="col-md-4">Upload Date</th>
+						<th class="col-md-4">Download</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let document of documents">
+						<td>{{document.name}}</td>
+						<td>{{document.uploadTime | date: 'short'}}</td>
+						<td>
+							<button type="button" class="btn btn-sm btn-success" (click)="downloadFile(document.id, document.name)" title="Download File" style="margin-right: 10px;" [disabled]="!isAddButtonEnabled()">
+								<i class="bi bi-file-earmark-arrow-down"></i>
+							</button>
+							<button type="button" class="btn btn-sm btn-danger" (click)="deleteDocument(document.id)" title="Delete File" [disabled]="!isDeleteButtonEnabled()">
+								<i class="bi bi-trash"></i> 
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+</div>
